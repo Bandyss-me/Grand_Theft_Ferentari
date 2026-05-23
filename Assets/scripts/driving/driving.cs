@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class driving : MonoBehaviour
 {
@@ -10,9 +11,6 @@ public class driving : MonoBehaviour
 
     [SerializeField]
     Transform r1, r2, r3, r4;
-
-    [SerializeField]
-    float floating_dis;
 
     Vector3 velocity;
     Rigidbody rb;
@@ -26,8 +24,9 @@ public class driving : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (Physics.Raycast(transform.position-transform.up*0.1f, Vector3.down, out RaycastHit hit, floating_dis))
+        if (Physics.BoxCast(transform.position+transform.up*1f, new Vector3(2f,1.2f,3.75f), Vector3.forward, out RaycastHit hit))
         {
+            Debug.Log("Grounded");
             isGrounded = true;
         }
         else isGrounded = false;
@@ -38,24 +37,25 @@ public class driving : MonoBehaviour
     {
         if (!isGrounded || isGrounded)
         {
+            velocity = rb.linearVelocity;
             if (Input.GetKey(KeyCode.W))
             {
-                velocity+=r1.forward*speed;
+                velocity+=r1.up*speed*-1f*Time.deltaTime;
             }
-            if (r1.rotation.eulerAngles.y <= 60 && r1.rotation.eulerAngles.y >= -60)
+            /*if (r1.rotation.eulerAngles.y <= 60 && r1.rotation.eulerAngles.y >= -60)
             {
                 if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D))
                 {
                     if (Input.GetKey(KeyCode.A))
                     {
-                        r1.Rotate(Vector3.up * -rotationSpeed * Time.deltaTime);
-                        r2.Rotate(Vector3.up * -rotationSpeed * Time.deltaTime);
+                        r1.Rotate(Vector3.forward * -rotationSpeed * Time.deltaTime);
+                        r2.Rotate(Vector3.forward * -rotationSpeed * Time.deltaTime);
                     }
 
                     if (Input.GetKey(KeyCode.D))
                     {
-                        r1.Rotate(Vector3.up * rotationSpeed * Time.deltaTime);
-                        r2.Rotate(Vector3.up * rotationSpeed * Time.deltaTime);
+                        r1.Rotate(Vector3.forward * rotationSpeed * Time.deltaTime);
+                        r2.Rotate(Vector3.forward * rotationSpeed * Time.deltaTime);
                     }
                 }
                 else
@@ -64,17 +64,18 @@ public class driving : MonoBehaviour
                     {
                         if (r1.eulerAngles.y >= -60)
                         {
-                            r1.Rotate(Vector3.up * rotationSpeed * Time.deltaTime);
-                            r2.Rotate(Vector3.up * rotationSpeed * Time.deltaTime);
+                            r1.Rotate(Vector3.forward * rotationSpeed * Time.deltaTime);
+                            r2.Rotate(Vector3.forward * rotationSpeed * Time.deltaTime);
                         }
                         else if (r2.eulerAngles.y >= -60)
                         {
-                            r1.Rotate(Vector3.up * -rotationSpeed * Time.deltaTime);
-                            r2.Rotate(Vector3.up * -rotationSpeed * Time.deltaTime);
+                            r1.Rotate(Vector3.forward * -rotationSpeed * Time.deltaTime);
+                            r2.Rotate(Vector3.forward * -rotationSpeed * Time.deltaTime);
                         }
                     }
                 }
-            }
+            }*/
+            rb.linearVelocity = velocity;
         }
     }
 
