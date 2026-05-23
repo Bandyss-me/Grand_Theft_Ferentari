@@ -4,24 +4,17 @@ using UnityEngine;
 
 public class testing_script : MonoBehaviour
 {
-    [SerializeField]
-    Transform t1;
-    [SerializeField]
-    Transform t2;
-
     void OnDrawGizmos()
     {
-        float t=Vector3.Dot(t1.forward, t2.position-t1.position);
-        Gizmos.color = Color.green;
-        Gizmos.DrawRay(t1.position, t1.forward * t);
-        Gizmos.DrawRay(t2.position,t1.position-t2.position);
         Gizmos.color = Color.red;
-        Gizmos.DrawRay(t1.position, t1.forward);
-    }
-    
-    float Cal_arm(Vector3 p, Vector3 r)
-    {
-        float t = Vector3.Dot(p, r);
-        return Mathf.Sqrt(Vector3.Magnitude(p - r)*Vector3.Magnitude(p - r)-t*t);
+        Gizmos.DrawRay(transform.position, transform.forward*5);
+        Gizmos.color = Color.blue;
+        Vector3 velocity = new Vector3(2, 0, 4);
+        Gizmos.DrawRay(transform.position, velocity);
+        float t = Vector3.Dot(transform.right, velocity);
+        Gizmos.color = Color.green;
+        Gizmos.DrawRay(transform.position, transform.right*t);
+        Gizmos.color = Color.deepPink;
+        Gizmos.DrawRay(transform.position, transform.right*t*-1f);
     }
 }
