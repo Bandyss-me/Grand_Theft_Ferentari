@@ -9,13 +9,14 @@ public class get_in_car : MonoBehaviour
         player.GetComponent<player_movement>().enabled = false;
         player.transform.position = transform.position+transform.up*1.3f+transform.right*-0.7f+transform.forward*0.25f;
         player.transform.rotation = transform.rotation;
-        camera.rotation =Quaternion.Euler(Vector3.forward);
+        camera.rotation =Quaternion.Euler(transform.forward);
         GetComponent<driving>().enabled = true;
         player.transform.SetParent(transform);
     }
 
-    public void GetOutOfcar(GameObject player)
+    public void GetOutOfCar(GameObject player)
     {
+        player.transform.position = player.transform.position + player.transform.right * -2f;
         player.GetComponent<CapsuleCollider>().enabled = true;
         player.GetComponent<CharacterController>().enabled = true;
         player.GetComponent<player_movement>().enabled = true;
