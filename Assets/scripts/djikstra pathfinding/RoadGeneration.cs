@@ -1,15 +1,27 @@
 using System;
 using System.IO;
 using UnityEngine;
+using System.Collections.Generic;
 
 public class RoadGeneration : MonoBehaviour
 {
+    [SerializeField]
+    GameObject intersection_prefab, road_prefab;
+    
     [SerializeField]
     Vector2Int cellSpacing;
 
     public bool[,] cityForm=new bool[30,30];
 
     Graph graph;
+
+    private void OnDrawGizmos()
+    {
+        foreach(Vertex x in graph.vertexes)
+        {
+            
+        }
+    }
 
     int GetNeighbours(int i, int j)
     {
@@ -56,7 +68,7 @@ public class RoadGeneration : MonoBehaviour
         SmoothGrid(2);
     }
     
-    void Start()
+    public void GenerateCity()
     {
         graph = GetComponent<Graph>();
         GenerateForm();
@@ -75,18 +87,6 @@ public class RoadGeneration : MonoBehaviour
         }
     }
 
-    Vertex UniqueVertex(Vertex x)
-    {
-        foreach (Vertex v in graph.vertexes)
-        {
-            if (v.pos == x.pos)
-            {
-                return v;
-            }
-        }
-        return null;
-    }
-
     void CreateGrid()
     {
         for (int i = 0; i < 30; i++)
@@ -95,11 +95,28 @@ public class RoadGeneration : MonoBehaviour
             {
                 if (cityForm[i, j] == true)
                 {
-                    Vertex A = new Vertex(new Vector2Int((i)*cellSpacing.x,(j)*cellSpacing.y));
-                    Vertex B = new Vertex(new Vector2Int((i-1)*cellSpacing.x,(j)*cellSpacing.y));
-                    Vertex C = new Vertex(new Vector2Int((i)*cellSpacing.x,(j-1)*cellSpacing.y));
-                    Vertex D = new Vertex(new Vector2Int((i-1)*cellSpacing.x,(j-1)*cellSpacing.y));
-                    
+                    Debug.LogWarning("OK");
+                    List<Vertex> l=new List<Vertex>();
+                    l.Add(new Vertex(new Vector2Int((i)*cellSpacing.x,(j)*cellSpacing.y)));
+                    l.Add(new Vertex(new Vector2Int((i-1)*cellSpacing.x,(j)*cellSpacing.y)));
+                    l.Add(new Vertex(new Vector2Int((i)*cellSpacing.x,(j-1)*cellSpacing.y)));
+                    l.Add(new Vertex(new Vector2Int((i-1)*cellSpacing.x,(j-1)*cellSpacing.y)));
+                    foreach (Vertex x in l)
+                    {
+                        if (!graph.vertexes.Contains(x))
+                        {
+                            graph.vertexes.Add(x);
+                            //Instantiate(intersection_prefab, transform.position+ new Vector3(x.pos.x, 1, x.pos.y),Quaternion.identity,transform);
+                        }
+                        foreach (Vertex y in l)
+                        {
+                            if(x==y) continue;
+                            if(graph.connections.Contains(new Conection(x,y)))
+                                graph.connections.Add(new Conection(x, y));
+                            if(graph.connections.Contains(new Conection(y,x)))
+                                graph.connections.Add(new Conection(y, x));
+                        }
+                    }
                 }
             }
         }
