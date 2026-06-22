@@ -911,6 +911,7 @@ GameObject:
   - component: {fileID: 1598099694}
   - component: {fileID: 1598099693}
   - component: {fileID: 1598099695}
+  - component: {fileID: 1598099696}
   m_Layer: 0
   m_Name: RoadGenerator
   m_TagString: Untagged
@@ -932,7 +933,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RoadGeneration
   intersection_prefab: {fileID: 4403560128318700882, guid: 41531554de1577f419a6c056467182f5, type: 3}
   road_prefab: {fileID: 8499614720051398551, guid: dfec8d9b723b08e4ab4463a1b8f9cd7d, type: 3}
-  cellSpacing: {x: 5, y: 5}
+  cellSpacing: {x: 100, y: 100}
 --- !u!4 &1598099694
 Transform:
   m_ObjectHideFlags: 0
@@ -942,7 +943,7 @@ Transform:
   m_GameObject: {fileID: 1598099692}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 397.45685, y: 0.00002, z: 108.24672}
+  m_LocalPosition: {x: 397.45685, y: 0, z: 108.24672}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -960,6 +961,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6cc4a7b9a617e672b3f4f309a39e598, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Graph
+--- !u!114 &1598099696
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1598099692}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa9d50c6e88b092aeb6d3404bbffc88d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::testing_script
 --- !u!1 &1929433297
 GameObject:
   m_ObjectHideFlags: 0

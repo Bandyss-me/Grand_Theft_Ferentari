@@ -1,20 +1,37 @@
 using System;
+using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using Random = System.Random;
 
 public class testing_script : MonoBehaviour
 {
+    Graph pathFinding;
+    List<Vertex> path;
+    
     void OnDrawGizmos()
     {
-        Gizmos.color = Color.red;
-        Gizmos.DrawRay(transform.position, transform.forward*5);
-        Gizmos.color = Color.blue;
-        Vector3 velocity = new Vector3(2, 0, 4);
-        Gizmos.DrawRay(transform.position, velocity);
-        float t = Vector3.Dot(transform.right, velocity);
-        Gizmos.color = Color.green;
-        Gizmos.DrawRay(transform.position, transform.right*t);
-        Gizmos.color = Color.deepPink;
-        Gizmos.DrawRay(transform.position, transform.right*t*-1f);
+       Gizmos.color = Color.green;
+       if (path != null)
+       {
+           foreach (Vertex v in path)
+           {
+               Gizmos.DrawSphere(transform.position + new Vector3(v.pos.x - 10f, 10f, v.pos.y + 10f), 5f);
+           }
+           Debug.LogError(path.Count);
+       }
+    }
+
+    void Start()
+    {
+        pathFinding = GetComponent<Graph>();
+        if (pathFinding != null)
+        {
+            int i, j;
+            Random rand = new Random();
+            i = rand.Next(pathFinding.vertexes.Count);
+            j = rand.Next(pathFinding.vertexes.Count);
+            path = pathFinding.FindPath(pathFinding.vertexes[i], pathFinding.vertexes[j]);
+        }
     }
 }

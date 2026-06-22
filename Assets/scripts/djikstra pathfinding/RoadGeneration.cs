@@ -15,14 +15,6 @@ public class RoadGeneration : MonoBehaviour
 
     Graph graph;
 
-    private void OnDrawGizmos()
-    {
-        foreach(Vertex x in graph.vertexes)
-        {
-            
-        }
-    }
-
     int GetNeighbours(int i, int j)
     {
         int n = 0;
@@ -65,7 +57,7 @@ public class RoadGeneration : MonoBehaviour
                 cityForm[i,j]=(UnityEngine.Random.Range(0,chance)==0);
             }
         }
-        SmoothGrid(2);
+        SmoothGrid(3);
     }
     
     public void GenerateCity()
@@ -74,18 +66,32 @@ public class RoadGeneration : MonoBehaviour
         GenerateForm();
         CreateGrid();
     }
+    
+    
 
-    void DebugCityForm()
+    Vertex CheckVertex(Vertex x)
     {
-        for (int i = 0; i < 30; i++)
+        foreach (Vertex v in graph.vertexes)
         {
-            for (int j = 0; j < 30; j++)
-            {
-                File.AppendAllText(@"/home/andy/Grand_Theft_Ferentari/Assets/scripts/djikstra pathfinding/debug.txt",(cityForm[i,j]==true)?"1 ":"  "); 
-            }
-            File.AppendAllText(@"/home/andy/Grand_Theft_Ferentari/Assets/scripts/djikstra pathfinding/debug.txt","\n");
+            if (v.pos == x.pos)
+                return v;
         }
+        return null;
     }
+    
+    bool CheckConnection(Conection x)
+    {
+        foreach (Conection c in graph.connections)
+        {
+            if (c.t.Item1 == x.t.Item1 && c.t.Item2 == x.t.Item2)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    
 
     void CreateGrid()
     {
@@ -95,26 +101,50 @@ public class RoadGeneration : MonoBehaviour
             {
                 if (cityForm[i, j] == true)
                 {
-                    Debug.LogWarning("OK");
                     List<Vertex> l=new List<Vertex>();
                     l.Add(new Vertex(new Vector2Int((i)*cellSpacing.x,(j)*cellSpacing.y)));
-                    l.Add(new Vertex(new Vector2Int((i-1)*cellSpacing.x,(j)*cellSpacing.y)));
-                    l.Add(new Vertex(new Vector2Int((i)*cellSpacing.x,(j-1)*cellSpacing.y)));
-                    l.Add(new Vertex(new Vector2Int((i-1)*cellSpacing.x,(j-1)*cellSpacing.y)));
-                    foreach (Vertex x in l)
+                    l.Add(new Vertex(new Vector2Int((i+1)*cellSpacing.x,(j)*cellSpacing.y)));
+                    l.Add(new Vertex(new Vector2Int((i)*cellSpacing.x,(j+1)*cellSpacing.y)));
+                    l.Add(new Vertex(new Vector2Int((i+1)*cellSpacing.x,(j+1)*cellSpacing.y)));
+                    for(int q=0;q<4;q++)
                     {
-                        if (!graph.vertexes.Contains(x))
+                        Vertex k = CheckVertex(l[q]);
+                        if (k==null)
                         {
-                            graph.vertexes.Add(x);
-                            //Instantiate(intersection_prefab, transform.position+ new Vector3(x.pos.x, 1, x.pos.y),Quaternion.identity,transform);
+                            graph.vertexes.Add(l[q]);
+                            Instantiate(intersection_prefab, transform.position + new Vector3(l[q].pos.x, 1, l[q].pos.y), Quaternion.identity, transform);
                         }
-                        foreach (Vertex y in l)
+                        else{
+                            l[q]=k;
+                        }
+                    }
+                    for (int x = 0; x < 4; x++)
+                    {
+                        for (int y = 0; y < 4; y++)
                         {
-                            if(x==y) continue;
-                            if(graph.connections.Contains(new Conection(x,y)))
-                                graph.connections.Add(new Conection(x, y));
-                            if(graph.connections.Contains(new Conection(y,x)))
-                                graph.connections.Add(new Conection(y, x));
+                            if(x==y || x==0 && y==3 || x==1 && y==2 || x==3 && y==0 || x==2 && y==1)
+                                continue;
+                            if (!CheckConnection(new Conection(l[x], l[y])))
+                            {
+                                graph.connections.Add(new Conection(l[x],l[y]));
+                                if (!CheckConnection(new Conection(l[y], l[x])))
+                                {
+                                    if (l[x].pos.x == l[y].pos.x)
+                                    {
+                                        for (int n = Math.Min(l[x].pos.y, l[y].pos.y)+20; n <= Math.Max(l[x].pos.y, l[y].pos.y)-10; n += 10)
+                                        {
+                                            Instantiate(road_prefab, transform.position+new Vector3(l[x].pos.x, 1f, n),Quaternion.Euler(0,0,0),transform);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        for (int n = Math.Min(l[x].pos.x, l[y].pos.x); n < Math.Max(l[x].pos.x, l[y].pos.x)-20; n += 10)
+                                        {
+                                            Instantiate(road_prefab, transform.position+new Vector3(n, 1f, l[x].pos.y),Quaternion.Euler(0,90,0),transform);
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
                 }
