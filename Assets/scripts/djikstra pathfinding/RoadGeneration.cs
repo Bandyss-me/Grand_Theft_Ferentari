@@ -11,6 +11,9 @@ public class RoadGeneration : MonoBehaviour
     [SerializeField]
     Vector2Int cellSpacing;
 
+    [SerializeField]
+    GameObject[] cells;
+
     public bool[,] cityForm=new bool[30,30];
 
     Graph graph;
@@ -113,6 +116,9 @@ public class RoadGeneration : MonoBehaviour
                         {
                             graph.vertexes.Add(l[q]);
                             Instantiate(intersection_prefab, transform.position + new Vector3(l[q].pos.x, 1, l[q].pos.y), Quaternion.identity, transform);
+                            int cellIndex = UnityEngine.Random.Range(0, cells.Length);
+                            Vector3 offset = new Vector3(-20,0,20);
+                            Instantiate(cells[cellIndex], transform.position + new Vector3(l[q].pos.x+cellSpacing.x/2, 1, l[q].pos.y+cellSpacing.y/2)+offset,Quaternion.identity,transform);
                         }
                         else{
                             l[q]=k;

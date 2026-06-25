@@ -33,7 +33,6 @@ public class driving : MonoBehaviour
     [Tooltip("Put the main ground collider as the first one")]
 
     Vector3 velocity;
-    Vector3 torque;
     Rigidbody rb;
     bool isGrounded;
     float wheelRot = 0f;
@@ -41,6 +40,8 @@ public class driving : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        rb.centerOfMass = new Vector3(0, -0.2f, 0);
+        rb.angularDamping = 1f;
     }
 
     void FixedUpdate()
@@ -108,8 +109,6 @@ public class driving : MonoBehaviour
             }
             ApplyTorque();
             rb.linearVelocity = velocity;
-            rb.AddTorque(torque);
-            torque = Vector3.zero;
         }
     }
     
@@ -125,6 +124,12 @@ public class driving : MonoBehaviour
     {
         Vector3 wheelVel = rb.GetPointVelocity(wheel.position);
         float lateralF = Vector3.Dot(wheelVel, wheel.right);
+        float steeringSlip = 0;
+        if (wheel == r1 || wheel == r2)
+        {
+            steeringSlip = Vector3.Dot(wheel.forward, rb.linearVelocity);
+        }
+        lateralF += steeringSlip * 15f;
         lateralF = Mathf.Clamp(lateralF, -11770 * 0.7f, 11770 * 0.7f);
         rb.AddForceAtPosition(-wheel.right*lateralF*0.7f,wheel.position);
     }
@@ -139,7 +144,9 @@ public class driving : MonoBehaviour
 
     void UnStuck()
     {
-        transform.position = transform.up * 5f;
+        rb.linearVelocity = Vector3.zero;
+        rb.angularVelocity = Vector3.zero;
+        transform.position += transform.up * 0.2f;
         transform.rotation = Quaternion.Euler(0, 0, 0);
     }
 }
