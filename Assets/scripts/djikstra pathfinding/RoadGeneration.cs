@@ -131,14 +131,14 @@ public class RoadGeneration : MonoBehaviour
                                 {
                                     if (l[x].pos.x == l[y].pos.x)
                                     {
-                                        for (int n = Math.Min(l[x].pos.y, l[y].pos.y)+20; n <= Math.Max(l[x].pos.y, l[y].pos.y)-10; n += 10)
+                                        for (int n = Math.Min(l[x].pos.y, l[y].pos.y)+40; n <= Math.Max(l[x].pos.y, l[y].pos.y)-20; n += 20)
                                         {
                                             Instantiate(road_prefab, transform.position+new Vector3(l[x].pos.x, 1f, n),Quaternion.Euler(0,0,0),transform);
                                         }
                                     }
                                     else
                                     {
-                                        for (int n = Math.Min(l[x].pos.x, l[y].pos.x); n < Math.Max(l[x].pos.x, l[y].pos.x)-20; n += 10)
+                                        for (int n = Math.Min(l[x].pos.x, l[y].pos.x); n < Math.Max(l[x].pos.x, l[y].pos.x)-40; n += 20)
                                         {
                                             Instantiate(road_prefab, transform.position+new Vector3(n, 1f, l[x].pos.y),Quaternion.Euler(0,90,0),transform);
                                         }
@@ -150,5 +150,6 @@ public class RoadGeneration : MonoBehaviour
                 }
             }
         }
+        graph.generated = true;
     }
 }

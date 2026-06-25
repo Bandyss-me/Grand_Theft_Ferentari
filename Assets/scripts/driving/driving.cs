@@ -1,5 +1,9 @@
+using System;
+using System.Globalization;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
 
 public class driving : MonoBehaviour
@@ -10,7 +14,10 @@ public class driving : MonoBehaviour
     [SerializeField]
     float rotationSpeed;
 
-    [Header("Wheels")]
+    [Header("Wheels")] [SerializeField]
+    float grip = 1f;
+    [Space]
+    
     [SerializeField]
     Transform r1;
     [SerializeField]
@@ -22,7 +29,8 @@ public class driving : MonoBehaviour
 
     [Header("Ground Checking")]
     [SerializeField]
-    Collider col;
+    Collider[] col;
+    [Tooltip("Put the main ground collider as the first one")]
 
     Vector3 velocity;
     Vector3 torque;
@@ -35,19 +43,18 @@ public class driving : MonoBehaviour
         rb = GetComponent<Rigidbody>();
     }
 
-    void OnDrawGizmos()
-    {
-        if(rb!=null)
-            Gizmos.DrawRay(transform.position,rb.linearVelocity*5f);
-    }
-
     void FixedUpdate()
     {
-        RaycastHit[] hits = Physics.BoxCastAll(transform.position + transform.up * -0.5f, new Vector3(3.5f, 0.5f, 8f), transform.forward);
-        foreach (RaycastHit hit in hits)
+        Collider[] hits = Physics.OverlapBox(
+            col[0].bounds.center,
+            col[0].bounds.extents,
+            col[0].transform.rotation
+        );
+        isGrounded = false;
+        foreach (Collider hit in hits)
         {
             isGrounded = false;
-            if (hit.collider != col)
+            if (!col.Contains(hit))
             {
                 isGrounded = true;
                 break;
@@ -58,7 +65,7 @@ public class driving : MonoBehaviour
 
     void Move()
     {
-        if (!isGrounded || isGrounded)
+        if (isGrounded)
         {
             velocity = rb.linearVelocity;
             if (Input.GetKey(KeyCode.W))
@@ -100,7 +107,6 @@ public class driving : MonoBehaviour
                 }
             }
             ApplyTorque();
-            Debug.Log(torque);
             rb.linearVelocity = velocity;
             rb.AddTorque(torque);
             torque = Vector3.zero;
@@ -109,23 +115,31 @@ public class driving : MonoBehaviour
     
     void ApplyTorque()
     {
-        ApplyWheelFriction(r1,-600f);
-        ApplyWheelFriction(r2,-600f);
-        ApplyWheelFriction(r3,-600f);
-        ApplyWheelFriction(r4,-600f);
+        ApplyWheelFriction(r1);
+        ApplyWheelFriction(r2);
+        ApplyWheelFriction(r3);
+        ApplyWheelFriction(r4);
     }
 
-    void ApplyWheelFriction(Transform wheel, float multiplier)
+    void ApplyWheelFriction(Transform wheel)
     {
-        float lateralF = Vector3.Dot(rb.linearVelocity, wheel.right);
-        lateralF=Mathf.Min(Mathf.Max(lateralF,-11770*0.7f),11770*0.7f);
-        velocity -= Time.deltaTime*lateralF*wheel.right;
-        torque += transform.up * ((wheel.position - transform.position).magnitude * lateralF * multiplier);
+        Vector3 wheelVel = rb.GetPointVelocity(wheel.position);
+        float lateralF = Vector3.Dot(wheelVel, wheel.right);
+        lateralF = Mathf.Clamp(lateralF, -11770 * 0.7f, 11770 * 0.7f);
+        rb.AddForceAtPosition(-wheel.right*lateralF*0.7f,wheel.position);
     }
 
-    float Cal_arm(Vector3 p, Vector3 r)
+    private void Update()
     {
-        float t = Mathf.Abs(Vector3.Dot(p, r));
-        return Mathf.Max(0f,Mathf.Sqrt(Vector3.Magnitude(p - r)*Vector3.Magnitude(p - r)-t*t));
+        if (Input.GetKey(KeyCode.R))
+        {
+            UnStuck();
+        }
+    }
+
+    void UnStuck()
+    {
+        transform.position = transform.up * 5f;
+        transform.rotation = Quaternion.Euler(0, 0, 0);
     }
 }

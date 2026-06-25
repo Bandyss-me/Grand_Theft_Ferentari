@@ -6,6 +6,7 @@ public class Graph : MonoBehaviour
 {
     public List<Vertex> vertexes=new List<Vertex>();
     public List<Conection> connections = new List<Conection>();
+    public bool generated;
 
     RoadGeneration rgeneration;
     
@@ -61,7 +62,7 @@ public class Graph : MonoBehaviour
     {
         List<Vertex> path = new List<Vertex>();
         Vertex current = target;
-        while (current.previous!=null)
+        while (current!=null)
         {
             path.Add(current);
             current = current.previous;
