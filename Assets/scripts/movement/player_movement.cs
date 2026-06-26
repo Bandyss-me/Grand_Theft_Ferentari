@@ -43,6 +43,7 @@ public class player_movement : MonoBehaviour
     float _cameraPitch;
     Vector3 _movementV;
     Vector3 _prevMovementV;
+    Menu_script menu;
 
     void Awake(){
         playerController=GetComponent<CharacterController>();
@@ -50,16 +51,21 @@ public class player_movement : MonoBehaviour
 
     void Start()
     {
+        menu = GetComponent<Menu_script>();
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         _hasLanded = false;
         _hasJumped = false;
     }
 
-    void Update(){
-        GroundCheck();
-        Move();
-        RotateWithMouse();
+    void Update()
+    {
+        if (!menu.paused)
+        {
+            GroundCheck();
+            Move();
+            RotateWithMouse();
+        }
     }
 
     void GroundCheck(){

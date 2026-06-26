@@ -40,7 +40,7 @@ public class driving : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-        rb.centerOfMass = new Vector3(0, -0.2f, 0);
+        rb.centerOfMass = new Vector3(0, 0, 0);
         rb.angularDamping = 1f;
     }
 

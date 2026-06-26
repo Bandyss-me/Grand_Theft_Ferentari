@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
@@ -16,11 +17,11 @@ public class police_car : MonoBehaviour
 
     Graph graph;
     List<Vertex> path=new List<Vertex>();
+    bool startCoroutine=true;
 
     void Start()
     {
         graph = roadGenerator.GetComponent<Graph>();
-        StartCoroutine(GoToPlayer());
     }
 
     Vertex NearestVertex(Vector3 pos)
@@ -62,10 +63,6 @@ public class police_car : MonoBehaviour
             path = graph.FindPath(start, target);
             foreach (Vertex v in path)
             {
-                if (v == null)
-                {
-                    Debug.LogError("Vertex is null");
-                }
                 Vector3 realPos = roadGenerator.transform.position + new Vector3(v.pos.x - 20f, 1, v.pos.y + 20f);
                 while (Vector3.Distance(transform.position, realPos) > 1f)
                 {
@@ -75,6 +72,24 @@ public class police_car : MonoBehaviour
                 }
             }
             yield return new WaitForSeconds(0.2f);
+        }
+    }
+
+    void Update()
+    {
+        if ((player.transform.position - transform.position).magnitude <= 50f)
+        {
+            StopCoroutine(GoToPlayer());
+            startCoroutine = true;
+            transform.position += ((player.transform.position - transform.position) * (speed * Time.deltaTime));
+        }
+        else
+        {
+            if (startCoroutine == true)
+            {
+                StartCoroutine(GoToPlayer());
+                startCoroutine = false;
+            }
         }
     }
 
