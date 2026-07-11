@@ -17,7 +17,7 @@ public class police_car : MonoBehaviour
 
     Graph graph;
     List<Vertex> path=new List<Vertex>();
-    bool startCoroutine=true;
+    private Coroutine _coroutine;
 
     void Start()
     {
@@ -55,11 +55,16 @@ public class police_car : MonoBehaviour
         {
             if (!graph.generated)
             { 
-                yield return null;
+                yield return new WaitForSeconds(0.1f);
                 continue;
             }
             Vertex start = NearestVertex(transform.position);
             Vertex target = NearestVertex(player.transform.position);
+            if (start == target)
+            {
+                yield return new WaitForSeconds(0.1f);
+                continue;
+            }
             path = graph.FindPath(start, target);
             foreach (Vertex v in path)
             {
@@ -71,41 +76,31 @@ public class police_car : MonoBehaviour
                     yield return null;
                 }
             }
-            yield return new WaitForSeconds(0.2f);
+            yield return new WaitForSeconds(0.1f);
         }
     }
 
     void Update()
     {
-        if ((player.transform.position - transform.position).magnitude <= 50f)
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position,player.transform.position-transform.position, out hit,50f) && hit.collider.gameObject==player)
         {
-            StopCoroutine(GoToPlayer());
-            startCoroutine = true;
-            transform.position += ((player.transform.position - transform.position) * (speed * Time.deltaTime));
+            if (_coroutine != null)
+            {
+                 StopCoroutine(_coroutine);
+                 _coroutine = null;
+            }
+            Vector3 pPos = new Vector3(player.transform.position.x, 1f, player.transform.position.z);
+            transform.LookAt(pPos);
+            transform.position += ((pPos-transform.position).normalized * (speed * Time.deltaTime));
+            Debug.LogWarning("close");
         }
         else
         {
-            if (startCoroutine == true)
+            Debug.LogWarning("not close");
+            if (_coroutine==null)
             {
-                StartCoroutine(GoToPlayer());
-                startCoroutine = false;
-            }
-        }
-    }
-
-    void OnDrawGizmos()
-    {
-        if (path != null)
-        {
-            for (int i = 0; i < path.Count; i++)
-            {
-                Gizmos.color = Color.green;
-                Gizmos.DrawSphere(roadGenerator.transform.position + new Vector3(path[i].pos.x - 20f, 10, path[i].pos.y + 20f), 5);
-                if (i > 0)
-                {
-                    Gizmos.color = Color.red;
-                    Gizmos.DrawLine(roadGenerator.transform.position + new Vector3(path[i].pos.x - 20f, 10, path[i].pos.y + 20f), roadGenerator.transform.position + new Vector3(path[i - 1].pos.x - 20f, 10, path[i - 1].pos.y + 20f));
-                }
+                _coroutine=StartCoroutine(GoToPlayer());
             }
         }
     }

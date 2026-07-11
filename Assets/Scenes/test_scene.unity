@@ -1423,6 +1423,10 @@ PrefabInstance:
       propertyPath: m_AdditionalShaderChannelsFlag
       value: 25
       objectReference: {fileID: 0}
+    - target: {fileID: 3819952040778667190, guid: 8224e4afe36f89b7bbd01252be7e91d6, type: 3}
+      propertyPath: run_speed
+      value: 50
+      objectReference: {fileID: 0}
     - target: {fileID: 5182432118684123374, guid: 8224e4afe36f89b7bbd01252be7e91d6, type: 3}
       propertyPath: m_LocalPosition.x
       value: 2.09
