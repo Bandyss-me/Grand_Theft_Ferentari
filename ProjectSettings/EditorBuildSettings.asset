@@ -12,7 +12,10 @@ EditorBuildSettings:
     path: Assets/Scenes/Tutorial.unity
     guid: b0b5e20718ef4f3ce8a4699753174531
   - enabled: 1
-    path: Assets/Scenes/test_scene.unity
+    path: Assets/Scenes/game.unity
     guid: 239c201b69dd9964282fd45090cb1174
+  - enabled: 1
+    path: Assets/Scenes/Lose_scene.unity
+    guid: 37890033f1fc0ef3fbbe5c6630e64d0c
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}

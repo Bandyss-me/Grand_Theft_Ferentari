@@ -40,7 +40,7 @@ public class driving : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-        rb.centerOfMass = new Vector3(0, 0, 0);
+        rb.centerOfMass = new Vector3(0, 0.2f, 0);
         rb.angularDamping = 1f;
     }
 
@@ -131,7 +131,7 @@ public class driving : MonoBehaviour
         }
         lateralF += steeringSlip * 15f;
         lateralF = Mathf.Clamp(lateralF, -11770 * 0.7f, 11770 * 0.7f);
-        rb.AddForceAtPosition(-wheel.right*lateralF*0.7f,wheel.position);
+        rb.AddForceAtPosition(-wheel.right * (lateralF * 0.7f),wheel.position);
     }
 
     private void Update()

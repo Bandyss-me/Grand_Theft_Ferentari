@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class police_car : MonoBehaviour
 {
@@ -85,6 +86,8 @@ public class police_car : MonoBehaviour
         RaycastHit hit;
         if (Physics.Raycast(transform.position,player.transform.position-transform.position, out hit,50f) && hit.collider.gameObject==player)
         {
+            if (hit.distance < 5f)
+                SceneManager.LoadScene(3);
             if (_coroutine != null)
             {
                  StopCoroutine(_coroutine);
