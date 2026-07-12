@@ -107,6 +107,11 @@ public class RoadGeneration : MonoBehaviour
             {
                 if (cityForm[i, j] == true)
                 {
+                    GameObject gb = new GameObject($"{i}:{j}");
+                    gb.transform.position = transform.position + new Vector3((i)*cellSpacing.x+cellSpacing.x/2, 1, (j)*cellSpacing.y+cellSpacing.y/2);
+                    gb.transform.SetParent(transform);
+                    GetComponent<cell_culling>().cells.Add(gb);
+                    
                     List<Vertex> l=new List<Vertex>();
                     l.Add(new Vertex(new Vector2Int((i)*cellSpacing.x,(j)*cellSpacing.y)));
                     l.Add(new Vertex(new Vector2Int((i+1)*cellSpacing.x,(j)*cellSpacing.y)));
@@ -116,9 +121,13 @@ public class RoadGeneration : MonoBehaviour
                     int pedestrians=UnityEngine.Random.Range(5,5);
                     while (pedestrians-->0)
                     {
-                        GameObject pedestrian = Instantiate(pedestrian_prefab ,transform.position+new Vector3(l[0].pos.x, 1, l[0].pos.y),Quaternion.identity,transform);
+                        GameObject pedestrian = Instantiate(pedestrian_prefab ,transform.position+new Vector3(l[0].pos.x, 1, l[0].pos.y),Quaternion.identity,gb.transform);
                         pedestrian.GetComponent<pedestrian_script>().waypoints = new Vector3[]{VertexToPos(l[0])+new Vector3(-10f,0,30f),VertexToPos(l[1])+new Vector3(-40f,0,30f),VertexToPos(l[2])+new Vector3(-40f,0,0),VertexToPos(l[3])+new Vector3(-10f,0,10f)};
                     }
+                    
+                    int cellIndex = UnityEngine.Random.Range(0, cells.Length);
+                    Vector3 offset = new Vector3(-20,0,20);
+                    Instantiate(cells[cellIndex], transform.position + new Vector3(l[0].pos.x+cellSpacing.x/2, 1, l[0].pos.y+cellSpacing.y/2)+offset,Quaternion.identity,gb.transform);
                     
                     for(int q=0;q<4;q++)
                     {
@@ -126,10 +135,7 @@ public class RoadGeneration : MonoBehaviour
                         if (k==null)
                         {
                             graph.vertexes.Add(l[q]);
-                            Instantiate(intersection_prefab, transform.position + new Vector3(l[q].pos.x, 1, l[q].pos.y), Quaternion.identity, transform);
-                            int cellIndex = UnityEngine.Random.Range(0, cells.Length);
-                            Vector3 offset = new Vector3(-20,0,20);
-                            Instantiate(cells[cellIndex], transform.position + new Vector3(l[q].pos.x+cellSpacing.x/2, 1, l[q].pos.y+cellSpacing.y/2)+offset,Quaternion.identity,transform);
+                            Instantiate(intersection_prefab, transform.position + new Vector3(l[q].pos.x, 1, l[q].pos.y), Quaternion.identity, gb.transform);
                         }
                         else{
                             l[q]=k;
@@ -150,14 +156,14 @@ public class RoadGeneration : MonoBehaviour
                                     {
                                         for (int n = Math.Min(l[x].pos.y, l[y].pos.y)+40; n <= Math.Max(l[x].pos.y, l[y].pos.y)-20; n += 20)
                                         {
-                                            Instantiate(road_prefab, transform.position+new Vector3(l[x].pos.x, 1f, n),Quaternion.Euler(0,0,0),transform);
+                                            Instantiate(road_prefab, transform.position+new Vector3(l[x].pos.x, 1f, n),Quaternion.Euler(0,0,0),gb.transform);
                                         }
                                     }
                                     else
                                     {
                                         for (int n = Math.Min(l[x].pos.x, l[y].pos.x); n < Math.Max(l[x].pos.x, l[y].pos.x)-40; n += 20)
                                         {
-                                            Instantiate(road_prefab, transform.position+new Vector3(n, 1f, l[x].pos.y),Quaternion.Euler(0,90,0),transform);
+                                            Instantiate(road_prefab, transform.position+new Vector3(n, 1f, l[x].pos.y),Quaternion.Euler(0,90,0),gb.transform);
                                         }
                                     }
                                 }

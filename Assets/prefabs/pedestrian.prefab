@@ -1025,7 +1025,6 @@ GameObject:
   - component: {fileID: 217358063204960709}
   - component: {fileID: 872862190410762303}
   - component: {fileID: 4565262068265066406}
-  - component: {fileID: 2305148575049862327}
   m_Layer: 0
   m_Name: pedestrian
   m_TagString: Untagged
@@ -1088,25 +1087,6 @@ MonoBehaviour:
   waypoints: []
   min_speed: 3
   max_speed: 6
---- !u!205 &2305148575049862327
-LODGroup:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3453200039642304490}
-  serializedVersion: 3
-  m_LocalReferencePoint: {x: 0, y: 0, z: 0}
-  m_Size: 1
-  m_FadeMode: 0
-  m_AnimateCrossFading: 0
-  m_LastLODIsBillboard: 0
-  m_LODs:
-  - screenRelativeHeight: 0.6
-    fadeTransitionWidth: 0
-    renderers: []
-  m_Enabled: 1
-  m_GlobalIlluminationLOD: 0
 --- !u!1 &3577080085666441454
 GameObject:
   m_ObjectHideFlags: 0

@@ -45,9 +45,10 @@ public class pedestrian_script : MonoBehaviour
 
     void SpawnRandomly()
     {
-        int k = UnityEngine.Random.Range(0, 3);
+        int k = UnityEngine.Random.Range(0, 4);
         int l = k + 1;
-        if (l == 4) l = 0;
+        if (l>3) l = 0;
+        Debug.LogError(l);
         if (waypoints[k].x == waypoints[l].x)
         {
             float z = UnityEngine.Random.Range(Mathf.Min(waypoints[k].z, waypoints[l].z),Mathf.Max(waypoints[k].z, waypoints[l].z));

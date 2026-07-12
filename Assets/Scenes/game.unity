@@ -643,6 +643,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Menu_script
   canva: {fileID: 1521282926}
   paused: 0
+--- !u!4 &992066698 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5182432118684123374, guid: 8224e4afe36f89b7bbd01252be7e91d6, type: 3}
+  m_PrefabInstance: {fileID: 136926909931383508}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &995104881 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2255840312884097460, guid: a151636a8fb0237959b6032161dec627, type: 3}
@@ -1219,11 +1224,14 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1598099692}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fa9d50c6e88b092aeb6d3404bbffc88d, type: 3}
+  m_Script: {fileID: 11500000, guid: 7fddc07a3858087f298d9cd0ae0d0c70, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::testing_script
+  m_EditorClassIdentifier: Assembly-CSharp::cell_culling
+  distance: 50
+  cells: []
+  player: {fileID: 992066698}
 --- !u!1 &1615869976
 GameObject:
   m_ObjectHideFlags: 0
