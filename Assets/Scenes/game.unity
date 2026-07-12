@@ -1177,6 +1177,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RoadGeneration
   intersection_prefab: {fileID: 2450546581216251122, guid: 566725c8dfb238f419a8e9342ffaab05, type: 3}
   road_prefab: {fileID: 8499614720051398551, guid: dfec8d9b723b08e4ab4463a1b8f9cd7d, type: 3}
+  pedestrian_prefab: {fileID: 3453200039642304490, guid: a3e79b9bb9e23ddd1a3be30c4e09fa3a, type: 3}
   cellSpacing: {x: 140, y: 140}
   cells:
   - {fileID: 1122968715153359821, guid: 9ee9577bbc8a71ee78438c2ba25ebb55, type: 3}
@@ -1425,7 +1426,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3819952040778667190, guid: 8224e4afe36f89b7bbd01252be7e91d6, type: 3}
       propertyPath: run_speed
-      value: 50
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 5182432118684123374, guid: 8224e4afe36f89b7bbd01252be7e91d6, type: 3}
       propertyPath: m_LocalPosition.x

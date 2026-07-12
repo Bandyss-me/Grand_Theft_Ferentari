@@ -6,7 +6,7 @@ using System.Collections.Generic;
 public class RoadGeneration : MonoBehaviour
 {
     [SerializeField]
-    GameObject intersection_prefab, road_prefab;
+    GameObject intersection_prefab, road_prefab, pedestrian_prefab;
     
     [SerializeField]
     Vector2Int cellSpacing;
@@ -93,8 +93,11 @@ public class RoadGeneration : MonoBehaviour
         }
         return false;
     }
-    
-    
+
+    Vector3 VertexToPos(Vertex v)
+    {
+        return transform.position + new Vector3(v.pos.x, 1, v.pos.y);
+    }
 
     void CreateGrid()
     {
@@ -109,6 +112,14 @@ public class RoadGeneration : MonoBehaviour
                     l.Add(new Vertex(new Vector2Int((i+1)*cellSpacing.x,(j)*cellSpacing.y)));
                     l.Add(new Vertex(new Vector2Int((i)*cellSpacing.x,(j+1)*cellSpacing.y)));
                     l.Add(new Vertex(new Vector2Int((i+1)*cellSpacing.x,(j+1)*cellSpacing.y)));
+
+                    int pedestrians=UnityEngine.Random.Range(5,5);
+                    while (pedestrians-->0)
+                    {
+                        GameObject pedestrian = Instantiate(pedestrian_prefab ,transform.position+new Vector3(l[0].pos.x, 1, l[0].pos.y),Quaternion.identity,transform);
+                        pedestrian.GetComponent<pedestrian_script>().waypoints = new Vector3[]{VertexToPos(l[0])+new Vector3(-10f,0,30f),VertexToPos(l[1])+new Vector3(-40f,0,30f),VertexToPos(l[2])+new Vector3(-40f,0,0),VertexToPos(l[3])+new Vector3(-10f,0,10f)};
+                    }
+                    
                     for(int q=0;q<4;q++)
                     {
                         Vertex k = CheckVertex(l[q]);
