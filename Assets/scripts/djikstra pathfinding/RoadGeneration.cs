@@ -123,7 +123,7 @@ public class RoadGeneration : MonoBehaviour
                     while (pedestrians-->0)
                     {
                         GameObject pedestrian = Instantiate(pedestrian_prefab ,transform.position+new Vector3(l[0].pos.x, 1, l[0].pos.y),Quaternion.identity,gb.transform);
-                        pedestrian.GetComponent<pedestrian_script>().waypoints = new Vector3[]{VertexToPos(l[0])+new Vector3(0,0,30f),VertexToPos(l[1])+new Vector3(-30f,0,30f),VertexToPos(l[3])+new Vector3(-30f,0,0),VertexToPos(l[2])+new Vector3(0,0,0)};
+                        pedestrian.GetComponent<pedestrian_script>().waypoints = new Vector3[]{VertexToPos(l[0])+new Vector3(-10f,0,30f),VertexToPos(l[1])+new Vector3(-40f,0,30f),VertexToPos(l[3])+new Vector3(-40f,0,0),VertexToPos(l[2])+new Vector3(-10f,0,0)};
                         pedestrian.GetComponent<pedestrian_script>().roadGenerator = this;
                     }
                     

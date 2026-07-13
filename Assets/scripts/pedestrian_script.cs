@@ -26,7 +26,7 @@ public class pedestrian_script : MonoBehaviour
     void Start()
     {
         speed = UnityEngine.Random.Range(min_speed, max_speed);
-        offset = new Vector3(UnityEngine.Random.Range(1f, 9f), 0, UnityEngine.Random.Range(1f, 5f));
+        offset = new Vector3(UnityEngine.Random.Range(2f, 8f), 0, UnityEngine.Random.Range(2f, 8f));
         direction = Random.value > 0.5f;
         SpawnRandomly();
         StartCoroutine(walk());
@@ -36,9 +36,9 @@ public class pedestrian_script : MonoBehaviour
     {
         while (true)
         {
-            while (Vector3.Distance(transform.position, waypoints[i] + offset) > 10f)
+            while (Vector3.Distance(transform.position, waypoints[i] + offset) > 3f)
             {
-                transform.LookAt(waypoints[i]);
+                transform.LookAt(waypoints[i]+offset);
                 transform.position += transform.forward * (speed * Time.deltaTime);
                 yield return null;
             }
@@ -54,7 +54,6 @@ public class pedestrian_script : MonoBehaviour
         int k = UnityEngine.Random.Range(0, 4);
         int l = k + 1;
         if (l>3) l = 0;
-        Debug.LogError(l);
         if (waypoints[k].x == waypoints[l].x)
         {
             float z = UnityEngine.Random.Range(Mathf.Min(waypoints[k].z, waypoints[l].z),Mathf.Max(waypoints[k].z, waypoints[l].z));
@@ -79,8 +78,10 @@ public class pedestrian_script : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        Gizmos.color = Color.red;
-        Gizmos.DrawLine(transform.position, waypoints[i] + new Vector3(0, 2f, 0));
-        Gizmos.DrawCube(waypoints[i] + new Vector3(0, 2f, 0), Vector3.one);
+        foreach (Vector3 v in waypoints)
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawCube(v+new Vector3(0,2f,0),Vector3.one);
+        }
     }
 }

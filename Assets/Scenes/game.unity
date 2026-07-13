@@ -468,91 +468,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 547841815}
   m_CullTransparentMesh: 1
---- !u!1001 &642079460
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 2252296976030854207, guid: e0ebd8e4b3bdb054c9c4357758f3c55a, type: 3}
-      propertyPath: m_Name
-      value: CompactCar_Police
-      objectReference: {fileID: 0}
-    - target: {fileID: 2252296976030854207, guid: e0ebd8e4b3bdb054c9c4357758f3c55a, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2252296976031215647, guid: e0ebd8e4b3bdb054c9c4357758f3c55a, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 13
-      objectReference: {fileID: 0}
-    - target: {fileID: 2252296976031215647, guid: e0ebd8e4b3bdb054c9c4357758f3c55a, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2252296976031215647, guid: e0ebd8e4b3bdb054c9c4357758f3c55a, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -21.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 2252296976031215647, guid: e0ebd8e4b3bdb054c9c4357758f3c55a, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2252296976031215647, guid: e0ebd8e4b3bdb054c9c4357758f3c55a, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2252296976031215647, guid: e0ebd8e4b3bdb054c9c4357758f3c55a, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2252296976031215647, guid: e0ebd8e4b3bdb054c9c4357758f3c55a, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2252296976031215647, guid: e0ebd8e4b3bdb054c9c4357758f3c55a, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2252296976031215647, guid: e0ebd8e4b3bdb054c9c4357758f3c55a, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2252296976031215647, guid: e0ebd8e4b3bdb054c9c4357758f3c55a, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 2252296976030854207, guid: e0ebd8e4b3bdb054c9c4357758f3c55a, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 642079462}
-  m_SourcePrefab: {fileID: 100100000, guid: e0ebd8e4b3bdb054c9c4357758f3c55a, type: 3}
---- !u!1 &642079461 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2252296976030854207, guid: e0ebd8e4b3bdb054c9c4357758f3c55a, type: 3}
-  m_PrefabInstance: {fileID: 642079460}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &642079462
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 642079461}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 648412574095e36ae89af4a1d78a5018, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::police_car
-  speed: 20
-  precisionRange: 10
-  player: {fileID: 992066684}
-  roadGenerator: {fileID: 1598099692}
 --- !u!4 &703619400 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 930871239384974634, guid: a151636a8fb0237959b6032161dec627, type: 3}
@@ -628,7 +543,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967295
   Camera: {fileID: 47195726}
-  distance: 3
+  distance: 5
 --- !u!114 &992066692
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1183,6 +1098,8 @@ MonoBehaviour:
   intersection_prefab: {fileID: 2450546581216251122, guid: 566725c8dfb238f419a8e9342ffaab05, type: 3}
   road_prefab: {fileID: 8499614720051398551, guid: dfec8d9b723b08e4ab4463a1b8f9cd7d, type: 3}
   pedestrian_prefab: {fileID: 3453200039642304490, guid: a3e79b9bb9e23ddd1a3be30c4e09fa3a, type: 3}
+  policecar_prefab: {fileID: 0}
+  player: {fileID: 992066684}
   cellSpacing: {x: 140, y: 140}
   cells:
   - {fileID: 1122968715153359821, guid: 9ee9577bbc8a71ee78438c2ba25ebb55, type: 3}
@@ -1369,52 +1286,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1615869976}
   m_CullTransparentMesh: 1
---- !u!1 &1994114968
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1994114970}
-  - component: {fileID: 1994114969}
-  m_Layer: 0
-  m_Name: policeCar_colldown
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1994114969
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1994114968}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 56329192dec32886aa609a43966fe606, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::policeCar_colldown
-  policeCar: {fileID: 642079461}
-  time: 10
---- !u!4 &1994114970
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1994114968}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 21.53795, y: 0.00001, z: -9.80185}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &2099890734 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3667504682912366288, guid: a151636a8fb0237959b6032161dec627, type: 3}
@@ -1965,7 +1836,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8350504809193344739, guid: a151636a8fb0237959b6032161dec627, type: 3}
       propertyPath: m_Name
-      value: DaciaLogan3
+      value: DaciaLogan
       objectReference: {fileID: 0}
     - target: {fileID: 8350504809193344739, guid: a151636a8fb0237959b6032161dec627, type: 3}
       propertyPath: m_Layer
@@ -2076,5 +1947,3 @@ SceneRoots:
   - {fileID: 136926909931383508}
   - {fileID: 470720258013479976}
   - {fileID: 1598099694}
-  - {fileID: 642079460}
-  - {fileID: 1994114970}
