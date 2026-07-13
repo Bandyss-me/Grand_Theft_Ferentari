@@ -1229,7 +1229,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7fddc07a3858087f298d9cd0ae0d0c70, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::cell_culling
-  distance: 50
+  distance: 500
   cells: []
   player: {fileID: 992066698}
 --- !u!1 &1615869976

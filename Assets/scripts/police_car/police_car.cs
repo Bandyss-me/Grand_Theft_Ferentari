@@ -10,11 +10,9 @@ public class police_car : MonoBehaviour
     float speed;
     [SerializeField]
     float precisionRange;
-
-    [SerializeField]
-    GameObject player;
-    [SerializeField]
-    GameObject roadGenerator;
+    
+    public GameObject player;
+    public GameObject roadGenerator;
 
     Graph graph;
     List<Vertex> path=new List<Vertex>();

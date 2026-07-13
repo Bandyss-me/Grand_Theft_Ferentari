@@ -6,11 +6,17 @@ using Random = UnityEngine.Random;
 
 public class pedestrian_script : MonoBehaviour
 {
-    [SerializeField]
     public Vector3[] waypoints;
+    public RoadGeneration roadGenerator;
 
     [SerializeField] 
     float min_speed = 3f, max_speed = 6f;
+
+    [SerializeField]
+    int police_spawn_chance=3;
+
+    [SerializeField] 
+    float min_money = 3f, max_money = 150f;
     
     Vector3 offset;
     float speed;
@@ -30,7 +36,7 @@ public class pedestrian_script : MonoBehaviour
     {
         while (true)
         {
-            while (Vector3.Distance(transform.position, waypoints[i] + offset) > 5f)
+            while (Vector3.Distance(transform.position, waypoints[i] + offset) > 10f)
             {
                 transform.LookAt(waypoints[i]);
                 transform.position += transform.forward * (speed * Time.deltaTime);
@@ -59,6 +65,22 @@ public class pedestrian_script : MonoBehaviour
             float x = UnityEngine.Random.Range(Mathf.Min(waypoints[k].x, waypoints[l].x),Mathf.Max(waypoints[k].x, waypoints[l].x));
             transform.position=new Vector3(x,waypoints[k].y,waypoints[k].z);
         }
-        
+        i = (direction) ? l : k;
+    }
+
+    public float RobMe()
+    {
+        if (UnityEngine.Random.Range(0, police_spawn_chance) == 0)
+        {
+            roadGenerator.SpawnAPoliceCar();
+        }
+        return UnityEngine.Random.Range(min_money, max_money);
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawLine(transform.position, waypoints[i] + new Vector3(0, 2f, 0));
+        Gizmos.DrawCube(waypoints[i] + new Vector3(0, 2f, 0), Vector3.one);
     }
 }

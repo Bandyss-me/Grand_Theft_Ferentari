@@ -6,7 +6,7 @@ using System.Collections.Generic;
 public class RoadGeneration : MonoBehaviour
 {
     [SerializeField]
-    GameObject intersection_prefab, road_prefab, pedestrian_prefab;
+    GameObject intersection_prefab, road_prefab, pedestrian_prefab, policecar_prefab,player;
     
     [SerializeField]
     Vector2Int cellSpacing;
@@ -17,6 +17,7 @@ public class RoadGeneration : MonoBehaviour
     public bool[,] cityForm=new bool[30,30];
 
     Graph graph;
+    private List<GameObject> intersections=new List<GameObject>();
 
     int GetNeighbours(int i, int j)
     {
@@ -122,7 +123,8 @@ public class RoadGeneration : MonoBehaviour
                     while (pedestrians-->0)
                     {
                         GameObject pedestrian = Instantiate(pedestrian_prefab ,transform.position+new Vector3(l[0].pos.x, 1, l[0].pos.y),Quaternion.identity,gb.transform);
-                        pedestrian.GetComponent<pedestrian_script>().waypoints = new Vector3[]{VertexToPos(l[0])+new Vector3(-10f,0,30f),VertexToPos(l[1])+new Vector3(-40f,0,30f),VertexToPos(l[2])+new Vector3(-40f,0,0),VertexToPos(l[3])+new Vector3(-10f,0,10f)};
+                        pedestrian.GetComponent<pedestrian_script>().waypoints = new Vector3[]{VertexToPos(l[0])+new Vector3(0,0,30f),VertexToPos(l[1])+new Vector3(-30f,0,30f),VertexToPos(l[3])+new Vector3(-30f,0,0),VertexToPos(l[2])+new Vector3(0,0,0)};
+                        pedestrian.GetComponent<pedestrian_script>().roadGenerator = this;
                     }
                     
                     int cellIndex = UnityEngine.Random.Range(0, cells.Length);
@@ -135,7 +137,7 @@ public class RoadGeneration : MonoBehaviour
                         if (k==null)
                         {
                             graph.vertexes.Add(l[q]);
-                            Instantiate(intersection_prefab, transform.position + new Vector3(l[q].pos.x, 1, l[q].pos.y), Quaternion.identity, gb.transform);
+                            intersections.Add(Instantiate(intersection_prefab, transform.position + new Vector3(l[q].pos.x, 1, l[q].pos.y), Quaternion.identity, gb.transform));
                         }
                         else{
                             l[q]=k;
@@ -174,5 +176,12 @@ public class RoadGeneration : MonoBehaviour
             }
         }
         graph.generated = true;
+    }
+
+    public void SpawnAPoliceCar()
+    {
+        GameObject car = Instantiate(policecar_prefab, intersections[UnityEngine.Random.Range(0, intersections.Count)].transform.position, Quaternion.identity);
+        car.GetComponent<police_car>().player = player;
+        car.GetComponent<police_car>().roadGenerator = gameObject;
     }
 }

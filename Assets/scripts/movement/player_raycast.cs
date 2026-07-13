@@ -15,7 +15,7 @@ public class player_raycast : MonoBehaviour
     void Update()
     {
         RaycastHit hit;
-        if (Physics.Raycast(transform.position, transform.forward, out hit, distance, carLayer) && Input.GetMouseButtonDown(0))
+        if (Physics.Raycast(transform.position, transform.forward, out hit, distance) && hit.collider.gameObject.name=="DaciaLogan" && Input.GetMouseButtonDown(0))
         {
             Get_in_car_script=hit.collider.gameObject.GetComponent<get_in_car>();
             Get_in_car_script.GetInCar(gameObject, Camera);
