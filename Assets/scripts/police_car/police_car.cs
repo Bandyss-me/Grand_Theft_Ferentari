@@ -85,7 +85,11 @@ public class police_car : MonoBehaviour
         if (Physics.Raycast(transform.position,player.transform.position-transform.position, out hit,50f) && hit.collider.gameObject==player)
         {
             if (hit.distance < 5f)
+            {
+                player.GetComponent<data_saving>().Save();
                 SceneManager.LoadScene(3);
+            }
+
             if (_coroutine != null)
             {
                  StopCoroutine(_coroutine);
@@ -94,11 +98,9 @@ public class police_car : MonoBehaviour
             Vector3 pPos = new Vector3(player.transform.position.x, 1f, player.transform.position.z);
             transform.LookAt(pPos);
             transform.position += ((pPos-transform.position).normalized * (speed * Time.deltaTime));
-            Debug.LogWarning("close");
         }
         else
         {
-            Debug.LogWarning("not close");
             if (_coroutine==null)
             {
                 _coroutine=StartCoroutine(GoToPlayer());

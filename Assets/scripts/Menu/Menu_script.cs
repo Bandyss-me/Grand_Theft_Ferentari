@@ -3,6 +3,7 @@ using UnityEngine.SceneManagement;
 
 public class Menu_script : MonoBehaviour
 {
+    
     public GameObject canva;
     public bool paused;
 
@@ -33,6 +34,7 @@ public class Menu_script : MonoBehaviour
     }
 
     public void Lobby(){
+        GetComponent<data_saving>().Save();
         SceneManager.LoadScene(0);
     }
 

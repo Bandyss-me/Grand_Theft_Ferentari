@@ -73,15 +73,6 @@ public class pedestrian_script : MonoBehaviour
         {
             roadGenerator.SpawnAPoliceCar();
         }
-        return UnityEngine.Random.Range(min_money, max_money);
-    }
-
-    private void OnDrawGizmos()
-    {
-        foreach (Vector3 v in waypoints)
-        {
-            Gizmos.color = Color.red;
-            Gizmos.DrawCube(v+new Vector3(0,2f,0),Vector3.one);
-        }
+        return (float)System.Math.Round(UnityEngine.Random.Range(min_money, max_money),0);
     }
 }
