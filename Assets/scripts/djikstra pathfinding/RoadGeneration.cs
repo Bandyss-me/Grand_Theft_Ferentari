@@ -119,7 +119,7 @@ public class RoadGeneration : MonoBehaviour
                     l.Add(new Vertex(new Vector2Int((i)*cellSpacing.x,(j+1)*cellSpacing.y)));
                     l.Add(new Vertex(new Vector2Int((i+1)*cellSpacing.x,(j+1)*cellSpacing.y)));
 
-                    int pedestrians=UnityEngine.Random.Range(5,5);
+                    int pedestrians=UnityEngine.Random.Range(2,15);
                     while (pedestrians-->0)
                     {
                         GameObject pedestrian = Instantiate(pedestrian_prefab ,transform.position+new Vector3(l[0].pos.x, 1, l[0].pos.y),Quaternion.identity,gb.transform);

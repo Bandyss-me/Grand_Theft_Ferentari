@@ -25,7 +25,7 @@ public class pedestrian_script : MonoBehaviour
     Vector3 offset;
     float speed,run_speed;
     int i = 0;
-    bool direction, robbed;
+    bool direction, robbed, initialized;
     Animator animatior;
     Coroutine coroutine;
     CharacterController _controller;
@@ -40,6 +40,15 @@ public class pedestrian_script : MonoBehaviour
         direction = UnityEngine.Random.value > 0.5f;
         SpawnRandomly();
         coroutine=StartCoroutine(walk());
+        initialized=true;
+    }
+
+    private void OnEnable()
+    {
+        if(!initialized)
+            return;
+        SpawnRandomly();
+        coroutine = StartCoroutine(walk());
     }
 
     IEnumerator walk()
@@ -66,17 +75,21 @@ public class pedestrian_script : MonoBehaviour
         int k = UnityEngine.Random.Range(0, 4);
         int l = k + 1;
         if (l>3) l = 0;
+        i = (direction) ? l : k;
         if (waypoints[k].x == waypoints[l].x)
         {
             float z = UnityEngine.Random.Range(Mathf.Min(waypoints[k].z, waypoints[l].z),Mathf.Max(waypoints[k].z, waypoints[l].z));
+            _controller.enabled = false;
             transform.position=new Vector3(waypoints[k].x,waypoints[k].y,z);
+            _controller.enabled = true;
         }
-        else if (waypoints[k].z == waypoints[l].z)
+        else
         {
             float x = UnityEngine.Random.Range(Mathf.Min(waypoints[k].x, waypoints[l].x),Mathf.Max(waypoints[k].x, waypoints[l].x));
+            _controller.enabled = false;
             transform.position=new Vector3(x,waypoints[k].y,waypoints[k].z);
+            _controller.enabled = true;
         }
-        i = (direction) ? l : k;
     }
 
     IEnumerator run()
