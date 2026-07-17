@@ -24,6 +24,11 @@ public class data_saving : MonoBehaviour
         money_text.text = "RON: " + data.money.ToString();
     }
 
+    public void Reset()
+    {
+        data.money = 0f;
+    }
+
     public void Save()
     {
         string json = JsonUtility.ToJson(data, true);
