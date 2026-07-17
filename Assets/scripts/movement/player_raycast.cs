@@ -36,7 +36,7 @@ public class player_raycast : MonoBehaviour
                 lclick.SetActive(true);
                 if (Input.GetMouseButtonDown(0))
                 {
-                    data.money+= hit.collider.gameObject.GetComponent<pedestrian_script>().RobMe();
+                    data.money+= hit.collider.gameObject.GetComponent<pedestrian_script>().RobMe(gameObject);
                 }
             }
             else lclick.SetActive(false);

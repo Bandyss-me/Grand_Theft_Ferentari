@@ -6,23 +6,21 @@ public class driving_script : MonoBehaviour
 {
     [Header("driving")]
     [SerializeField]
-    float speed=2.2f;
+    float speed=30f;
     [SerializeField]
     float rotationSpeed;
-
     [SerializeField] 
-    float maxSpeed=50f;
+    float maxSpeed=80f;
 
     [Header("Wheels")] [SerializeField]
-    float grip = 1f;
+    float grip = 80f;
 
     [Space] [SerializeField] 
     Transform r1, r2, r3, r4, steeringWheel;
 
     [Header("Ground Checking")]
     [SerializeField]
-    Collider[] col;
-    [Tooltip("Put the main ground collider as the first one")]
+    float floatingDis;
 
     Rigidbody rb;
     bool isGrounded;
@@ -31,26 +29,20 @@ public class driving_script : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-        rb.centerOfMass = new Vector3(0, 0.2f, 0);
+        rb.centerOfMass = new Vector3(0, 0.5f, 0);
         rb.angularDamping = 1f;
     }
 
     void FixedUpdate()
     {
-        Collider[] hits = Physics.OverlapBox(
-            col[0].bounds.center,
-            col[0].bounds.extents,
-            col[0].transform.rotation
-        );
+        RaycastHit[] hits = Physics.RaycastAll(transform.position, Vector3.down, floatingDis);
         isGrounded = false;
-        foreach (Collider hit in hits)
+        foreach (RaycastHit hit in hits)
         {
-            isGrounded = false;
-            if (!col.Contains(hit))
-            {
-                isGrounded = true;
-                break;
-            }
+            if (hit.collider.transform.IsChildOf(transform))
+                continue;
+            isGrounded = true;
+            rb.AddForce(transform.up * (floatingDis-hit.distance), ForceMode.Acceleration);
         }
         Move();
     }
@@ -87,7 +79,7 @@ public class driving_script : MonoBehaviour
             r2.localRotation = Quaternion.Euler(0, 0, wheelRot);
             steeringWheel.localRotation = Quaternion.Euler(-156f, 0, wheelRot);
 
-            rb.AddForce(transform.forward * (input * speed));
+            rb.AddForce(transform.forward * (input * speed), ForceMode.Acceleration);
             if (rb.linearVelocity.magnitude > maxSpeed)
                 rb.linearVelocity = rb.linearVelocity.normalized * maxSpeed;
             ApplyTorque();
@@ -106,14 +98,8 @@ public class driving_script : MonoBehaviour
     {
         Vector3 wheelVel = rb.GetPointVelocity(wheel.position);
         float lateralF = Vector3.Dot(wheelVel, wheel.right);
-        /*float steeringSlip = 0;
-        if (wheel == r1 || wheel == r2)
-        {
-            steeringSlip = Vector3.Dot(wheel.forward, rb.linearVelocity);
-        }
-        lateralF += steeringSlip;*/
-        lateralF = Mathf.Clamp(lateralF, -11770 * 0.7f, 11770 * 0.7f);
-        rb.AddForceAtPosition(-wheel.right * (lateralF * 0.7f),wheel.position);
+        lateralF = Mathf.Clamp(lateralF, -11770 * grip, 11770 * grip);
+        rb.AddForceAtPosition(-wheel.right * (lateralF * grip),wheel.position, ForceMode.Acceleration);
     }
 
     private void Update()
