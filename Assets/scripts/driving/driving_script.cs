@@ -1,18 +1,17 @@
 using System;
-using System.Globalization;
 using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.InputSystem;
-using UnityEngine.UIElements;
 
-public class driving : MonoBehaviour
+public class driving_script : MonoBehaviour
 {
     [Header("driving")]
     [SerializeField]
     float speed=2.2f;
     [SerializeField]
     float rotationSpeed;
+
+    [SerializeField] 
+    float maxSpeed=50f;
 
     [Header("Wheels")] [SerializeField]
     float grip = 1f;
@@ -25,7 +24,6 @@ public class driving : MonoBehaviour
     Collider[] col;
     [Tooltip("Put the main ground collider as the first one")]
 
-    Vector3 velocity;
     Rigidbody rb;
     bool isGrounded;
     float wheelRot = 0f;
@@ -61,51 +59,38 @@ public class driving : MonoBehaviour
     {
         if (isGrounded)
         {
-            velocity = rb.linearVelocity;
+            float input = 0f;
             if (Input.GetKey(KeyCode.W))
             {
-                velocity+=r4.up * (speed * -1f * Time.deltaTime);
+                input += 1;
             }
             if (Input.GetKey(KeyCode.S))
             {
-                velocity+=r4.up * (speed * 0.6f * Time.deltaTime);
+                input -= 1;
             }
-            if (wheelRot <= 60 && wheelRot >= -60 && (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D)))
+
+            if (Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.D))
             {
-                if (Input.GetKey(KeyCode.A))
-                {
-                    r1.Rotate(Vector3.forward * (-rotationSpeed * Time.deltaTime));
-                    r2.Rotate(Vector3.forward * (-rotationSpeed * Time.deltaTime));
-                    steeringWheel.Rotate(Vector3.forward * (-rotationSpeed * 2f * Time.deltaTime));
-                    wheelRot += -rotationSpeed * Time.deltaTime;
-                }
-                if (Input.GetKey(KeyCode.D))
-                {
-                    r1.Rotate(Vector3.forward * (rotationSpeed * Time.deltaTime));
-                    r2.Rotate(Vector3.forward * (rotationSpeed * Time.deltaTime));
-                    steeringWheel.Rotate(Vector3.forward * (rotationSpeed * 2f * Time.deltaTime));
-                    wheelRot += rotationSpeed * Time.deltaTime;
-                }
+                wheelRot = Mathf.MoveTowards(wheelRot, 0f, rotationSpeed * Time.deltaTime);
             }
-            else
+            else if (Input.GetKey(KeyCode.A))
             {
-                if (wheelRot < 0)
-                {
-                    r1.Rotate(Vector3.forward * (rotationSpeed * Time.deltaTime));
-                    r2.Rotate(Vector3.forward * (rotationSpeed * Time.deltaTime));
-                    steeringWheel.Rotate(Vector3.forward * (rotationSpeed * 2f * Time.deltaTime));
-                    wheelRot += rotationSpeed * Time.deltaTime;
-                }
-                else
-                {
-                    r1.Rotate(Vector3.forward * (-rotationSpeed * Time.deltaTime));
-                    r2.Rotate(Vector3.forward * (-rotationSpeed * Time.deltaTime));
-                    steeringWheel.Rotate(Vector3.forward * (-rotationSpeed * 2f * Time.deltaTime));
-                    wheelRot += -rotationSpeed * Time.deltaTime;
-                }
+                wheelRot = Mathf.MoveTowards(wheelRot, -60f, rotationSpeed * Time.deltaTime);
             }
+            else if (Input.GetKey(KeyCode.D))
+            {
+                wheelRot = Mathf.MoveTowards(wheelRot, 60f, rotationSpeed * Time.deltaTime);
+            }
+            else wheelRot = Mathf.MoveTowards(wheelRot, 0f, rotationSpeed * Time.deltaTime);
+            
+            r1.localRotation = Quaternion.Euler(0, 0, wheelRot);
+            r2.localRotation = Quaternion.Euler(0, 0, wheelRot);
+            steeringWheel.localRotation = Quaternion.Euler(-156f, 0, wheelRot);
+
+            rb.AddForce(transform.forward * (input * speed));
+            if (rb.linearVelocity.magnitude > maxSpeed)
+                rb.linearVelocity = rb.linearVelocity.normalized * maxSpeed;
             ApplyTorque();
-            rb.linearVelocity = velocity;
         }
     }
     
@@ -121,12 +106,12 @@ public class driving : MonoBehaviour
     {
         Vector3 wheelVel = rb.GetPointVelocity(wheel.position);
         float lateralF = Vector3.Dot(wheelVel, wheel.right);
-        float steeringSlip = 0;
+        /*float steeringSlip = 0;
         if (wheel == r1 || wheel == r2)
         {
             steeringSlip = Vector3.Dot(wheel.forward, rb.linearVelocity);
         }
-        lateralF += steeringSlip * 15f;
+        lateralF += steeringSlip;*/
         lateralF = Mathf.Clamp(lateralF, -11770 * 0.7f, 11770 * 0.7f);
         rb.AddForceAtPosition(-wheel.right * (lateralF * 0.7f),wheel.position);
     }

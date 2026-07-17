@@ -578,12 +578,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::driving
   speed: 30
-  rotationSpeed: 75
+  rotationSpeed: 180
+  maxSpeed: 50
   grip: 35
   r1: {fileID: 492924974}
   r2: {fileID: 995104881}
   r3: {fileID: 703619400}
   r4: {fileID: 2099890734}
+  steeringWheel: {fileID: 754736201}
   col:
   - {fileID: 1541092182}
   - {fileID: 1541092183}
@@ -656,7 +658,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::simple_driving_script
   speed: 30
   rotationSpeed: 75
-  maxSpeed: 50
   r1: {fileID: 492924974}
   r2: {fileID: 995104881}
   r3: {fileID: 703619400}
