@@ -1,41 +1,25 @@
 using System;
-using System.Globalization;
 using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.InputSystem;
-using UnityEngine.UIElements;
 
-public class driving : MonoBehaviour
+public class simple_driving_script : MonoBehaviour
 {
-    [Header("driving")]
-    [SerializeField]
-    float speed=2.2f;
-    [SerializeField]
+    [Header("Movement")]
+    [SerializeField] 
+    float speed=5f;
+    [SerializeField] 
     float rotationSpeed;
-
-    [Header("Wheels")] [SerializeField]
-    float grip = 1f;
-
-    [Space] [SerializeField] 
+    
+    [SerializeField]
     Transform r1, r2, r3, r4, steeringWheel;
-
+    
     [Header("Ground Checking")]
     [SerializeField]
     Collider[] col;
     [Tooltip("Put the main ground collider as the first one")]
-
-    Vector3 velocity;
-    Rigidbody rb;
+    
     bool isGrounded;
     float wheelRot = 0f;
-
-    void Start()
-    {
-        rb = GetComponent<Rigidbody>();
-        rb.centerOfMass = new Vector3(0, 0.2f, 0);
-        rb.angularDamping = 1f;
-    }
 
     void FixedUpdate()
     {
@@ -61,14 +45,14 @@ public class driving : MonoBehaviour
     {
         if (isGrounded)
         {
-            velocity = rb.linearVelocity;
+            float input=0f;
             if (Input.GetKey(KeyCode.W))
             {
-                velocity+=r4.up * (speed * -1f * Time.deltaTime);
+                input+=1f;
             }
             if (Input.GetKey(KeyCode.S))
             {
-                velocity+=r4.up * (speed * 0.6f * Time.deltaTime);
+                input -= 1f;
             }
             if (wheelRot <= 60 && wheelRot >= -60 && (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D)))
             {
@@ -104,46 +88,13 @@ public class driving : MonoBehaviour
                     wheelRot += -rotationSpeed * Time.deltaTime;
                 }
             }
-            ApplyTorque();
-            rb.linearVelocity = velocity;
-        }
-    }
-    
-    void ApplyTorque()
-    {
-        ApplyWheelFriction(r1);
-        ApplyWheelFriction(r2);
-        ApplyWheelFriction(r3);
-        ApplyWheelFriction(r4);
-    }
-
-    void ApplyWheelFriction(Transform wheel)
-    {
-        Vector3 wheelVel = rb.GetPointVelocity(wheel.position);
-        float lateralF = Vector3.Dot(wheelVel, wheel.right);
-        float steeringSlip = 0;
-        if (wheel == r1 || wheel == r2)
-        {
-            steeringSlip = Vector3.Dot(wheel.forward, rb.linearVelocity);
-        }
-        lateralF += steeringSlip * 15f;
-        lateralF = Mathf.Clamp(lateralF, -11770 * 0.7f, 11770 * 0.7f);
-        rb.AddForceAtPosition(-wheel.right * (lateralF * 0.7f),wheel.position);
-    }
-
-    private void Update()
-    {
-        if (Input.GetKey(KeyCode.R))
-        {
-            UnStuck();
+            transform.position += transform.forward * (input * speed * Time.deltaTime);
+            Steering();
         }
     }
 
-    void UnStuck()
+    void Steering()
     {
-        rb.linearVelocity = Vector3.zero;
-        rb.angularVelocity = Vector3.zero;
-        transform.position += transform.up * 0.2f;
-        transform.rotation = Quaternion.Euler(0, 0, 0);
+        transform.Rotate(Vector3.up * (wheelRot * Time.deltaTime));
     }
 }
