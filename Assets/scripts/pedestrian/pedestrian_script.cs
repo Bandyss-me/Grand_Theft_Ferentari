@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class pedestrian_script : MonoBehaviour
 {
+    public Coroutine coroutine;
     public Vector3[] waypoints;
     public RoadGeneration roadGenerator;
 
@@ -27,13 +28,17 @@ public class pedestrian_script : MonoBehaviour
     int i = 0;
     bool direction, robbed, initialized;
     Animator animatior;
-    Coroutine coroutine;
     CharacterController _controller;
 
     void Start()
     {
         animatior = GetComponent<Animator>();
         _controller = GetComponent<CharacterController>();
+        Spawn();
+    }
+
+    public void Spawn()
+    {
         speed = UnityEngine.Random.Range(min_speed, max_speed);
         run_speed = UnityEngine.Random.Range(min_run_speed, max_run_speed);
         offset = new Vector3(UnityEngine.Random.Range(2f, 8f), 0, UnityEngine.Random.Range(2f, 8f));
@@ -41,6 +46,7 @@ public class pedestrian_script : MonoBehaviour
         SpawnRandomly();
         coroutine=StartCoroutine(walk());
         initialized=true;
+        robbed = false;
     }
 
     private void OnEnable()
