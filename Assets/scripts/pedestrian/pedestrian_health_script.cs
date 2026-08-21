@@ -22,21 +22,24 @@ public class pedestrian_health_script : MonoBehaviour
         caracterController = GetComponent<CharacterController>();
         animator = GetComponent<Animator>();
         ragdolls = GetComponentsInChildren<Rigidbody>();
+        foreach (Rigidbody ragdoll in ragdolls)
+        {
+            ragdoll.isKinematic = true;
+        }
         health = maxHealth;
     }
     
     IEnumerator Die(Vector3 direction)
     {
-        Coroutine coroutine = GetComponent<pedestrian_script>().coroutine;
-        if(coroutine!=null) StopCoroutine(coroutine);
+        GetComponent<pedestrian_script>().StopMovement();
         caracterController.enabled = false;
-        yield return new WaitForSeconds(1f);
         animator.enabled = false;
+        yield return new WaitForSeconds(1f);
         foreach (Rigidbody ragdoll in ragdolls)
         {
             ragdoll.isKinematic = false;
         }
-        body.GetComponent<Rigidbody>().AddForce(direction.normalized*20f, ForceMode.VelocityChange);
+        body.GetComponent<Rigidbody>().AddForce(direction.normalized*200f, ForceMode.VelocityChange);
         yield return new WaitForSeconds(30f);
         foreach (Rigidbody ragdoll in ragdolls)
         {

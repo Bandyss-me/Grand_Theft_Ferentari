@@ -138,4 +138,13 @@ public class pedestrian_script : MonoBehaviour
         }
         return (float)System.Math.Round(UnityEngine.Random.Range(min_money, max_money),0);
     }
+    
+    public void StopMovement()
+    {
+        if (coroutine != null)
+        {
+            StopCoroutine(coroutine);
+            coroutine = null;
+        }
+    }
 }

@@ -7,8 +7,6 @@ public class player_raycast : MonoBehaviour
     Transform Camera;
     [SerializeField]
     float distance;
-    [SerializeField] 
-    GameObject lclick;
 
     public player_data data;
 
@@ -23,8 +21,7 @@ public class player_raycast : MonoBehaviour
         {
             if (hit.collider.gameObject.name == "DaciaLogan")
             {
-                lclick.SetActive(true);
-                if (Input.GetMouseButtonDown(0))
+                if (Input.GetMouseButtonDown(1))
                 {
                     Get_in_car_script=hit.collider.gameObject.GetComponent<get_in_car>();
                     Get_in_car_script.GetInCar(gameObject, Camera);
@@ -33,15 +30,16 @@ public class player_raycast : MonoBehaviour
             }
             else if (hit.collider.gameObject.name == "pedestrian(Clone)")
             {
-                lclick.SetActive(true);
-                if (Input.GetMouseButtonDown(0))
+                if (Input.GetMouseButtonDown(1))
                 {
                     data.money+= hit.collider.gameObject.GetComponent<pedestrian_script>().RobMe(gameObject);
                 }
+                if (Input.GetMouseButtonDown(0))
+                {
+                    hit.collider.gameObject.GetComponent<pedestrian_health_script>().HitMe(5f, hit.collider.gameObject.transform.position-transform.position);
+                }
             }
-            else lclick.SetActive(false);
         }
-        else lclick.SetActive(false);
         
         if (Input.GetKeyDown(KeyCode.E) && inCar == true)
         {
